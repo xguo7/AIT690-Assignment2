@@ -46,7 +46,7 @@ def boundaries(nngrams):
 def delete_short(words,ngramModel):
     '''1. delete the words from short sentence which words amount is less than n
         2. add the start and end tags on the words list so that each sentance will begin with 'start_' and end with 'end_' '''
-    boundary=['.','?','!']  #put the start and end tags when find the end punctations
+    boundary=['.','?','!',';']  #put the start and end tags when find the end punctations
     new_words=[]
     sentence=[]
     for i in words:       
