@@ -14,16 +14,13 @@ def read_files(ngramModel, numFiles):
     This function returns tokens as the output
     '''
     MergedText = []
-    MergedWord= []
     for file in range(3,numFiles):
         #Read all the files
-        text= gutenberg.raw(sys.argv[file])
-        MergedText= MergedText+text   # add the raw text 
-        
+	
         word =gutenberg.words(sys.argv[file])
-        MergedWord.extend(word)   #add
+        MergedText.extend(word)   #add
         
-    return MergedText, MergedWord
+    return MergedText
 
 def generateModel(MergedText, MergedWord, ngramModel):
     '''
