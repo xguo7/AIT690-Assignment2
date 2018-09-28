@@ -1,6 +1,6 @@
 %script ngram-log.txt
-%time python ngram.py 1 10 pg2554.txt pg2600.txt pg1399.txt
-%time python ngram.py 2 10 pg2554.txt pg2600.txt pg1399.txt
-%time python ngram.py 3 10 pg2554.txt pg2600.txt pg1399.txt
-%time python ngram.py 4.10 pg2554.txt pg2600.txt pg1399.txt
+%time python ngram.py 1 10 'austen-emma.txt' 'austen-persuasion.txt'
+%time python ngram.py 2 10 'austen-emma.txt' 'austen-persuasion.txt'
+%time python ngram.py 3 10 'austen-emma.txt' 'austen-persuasion.txt'
+%time python ngram.py 4.10 'austen-emma.txt' 'austen-persuasion.txt'
 %exit
