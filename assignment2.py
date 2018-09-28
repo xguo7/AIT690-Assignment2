@@ -34,11 +34,26 @@ def boundaries(nngrams):
                 new_nngrams.append(i)
     return new_nngrams
 
+def delete_short(words,ngramModel):
+    '''delete the words from short sentence which words amount is less than n'''
+    boundary=['.','?',';',',','!']
+    new_words=[]
+    sentence=[]
+    for i in words:       
+        sentence.append(i)
+        if i in boundary: 
+            if len(sentence)>ngramModel: new_words.extend(sentence)
+            sentence=[]
+    return new_words
+
 def generateModel(MergedText, MergedWord, ngramModel):
     '''
     This function generates nGram Model.
     '''
     vocabulary = set(MergedText)
+	
+    MergedText=delete_short(MergedText,ngramModel) # delete the words from short sentence which words amount is less than n
+
     nngrams = boundaries(list(ngrams(MergedText,ngramModel)))  #generate the nngrams withour cross bouodary
 	
     cfd = ConditionalFreqDist()
