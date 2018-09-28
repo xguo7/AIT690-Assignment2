@@ -22,12 +22,24 @@ def read_files(ngramModel, numFiles):
         
     return MergedText
 
+def boundaries(nngrams):  
+    ''' delete the cross boudary nngrams'''
+    boundary=['.','?',';',',','!']
+    new_nngrams=[]
+    for i in nngrams:
+        for j in boundary:
+            if j in i and i.index(j)!=0 and i.index(j)!=len(i)-1:
+                break
+            if j==boundary[-1]:
+                new_nngrams.append(i)
+    return new_nngrams
+
 def generateModel(MergedText, MergedWord, ngramModel):
     '''
     This function generates nGram Model.
     '''
     vocabulary = set(MergedText)
-    nngrams = list(ngrams(MergedText,ngramModel))
+    nngrams = boundaries(list(ngrams(MergedText,ngramModel)))  #generate the nngrams withour cross bouodary
 	
     cfd = ConditionalFreqDist()
     ngramSet = set()
