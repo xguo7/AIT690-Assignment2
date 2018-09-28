@@ -25,7 +25,7 @@ def read_files(ngramModel, numFiles):
 
 def boundaries(nngrams):  
     ''' delete the cross boudary nngrams'''
-    boundary=['.','?',';',',','!']
+    boundary=['.','?','!']
     new_nngrams=[]
     for i in nngrams:
         for j in boundary:
@@ -37,7 +37,7 @@ def boundaries(nngrams):
 
 def delete_short(words,ngramModel):
     '''delete the words from short sentence which words amount is less than n'''
-    boundary=['.','?',';',',','!']
+    boundary=['.','?','!']
     new_words=[]
     sentence=[]
     for i in words:       
