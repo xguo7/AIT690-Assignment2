@@ -51,7 +51,7 @@ def generateModel(MergedText, MergedWord, ngramModel):
     generateSentences(nngrams,cfd,ngramModel)
 	    
 	
-def generateSentences(nngrams,cfd,ngramModel):
+def generateSentences(nngrams,cfd,ngramModel,numSentences):
     
     for sentence in range(10):
 	
@@ -98,8 +98,9 @@ def main():
     numSentences = sys.argv[2] 
     numFiles = len(sys.argv)	
     MergedText = read_files(ngramModel,numFiles)
-
-    generateModel(MergedText,ngramModel)
+    print "This program generates random sentences based on an Ngram model."
+    print "Command line settings: ngram.py",ngramModel,numSentences
+    generateModel(MergedText,ngramModel,numSentences)
   
     
 if __name__ == '__main__':
