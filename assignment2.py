@@ -25,7 +25,7 @@ def read_files(ngramModel, numFiles):
         
     return MergedText, MergedWord
 
-def generateModel(MergedText, ngramModel):
+def generateModel(MergedText, MergedWord, ngramModel):
     '''
     This function generates nGram Model.
     '''
