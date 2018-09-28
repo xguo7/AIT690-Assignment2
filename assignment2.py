@@ -40,9 +40,9 @@ def delete_short(words,ngramModel):
         sentence.append(i.lower())
         if i in boundary: 
             if len(sentence)>=ngramModel: 
-                 sentence.append('end_')
+                 sentence.append('end_') #give the end tag if the sentance is ended.
                  new_words.extend(sentence)
-            sentence=['start_']
+            sentence=['start_'] #add a start tag at the begining of a sentence
     return new_words
 
 def generateModel(MergedText, ngramModel, numSentences):
@@ -77,6 +77,7 @@ def generateModel(MergedText, ngramModel, numSentences):
     generateSentences(nngrams,cfd,ngramModel,ProbDictionary,numSentences)
 	    
 def find_start_grams(nngrams):
+ '''this function found all the grams that can be used at the beginging of a sentence, which has a stat tag'''
     start_grams=[]
     for gram in nngrams:	
           if gram[0]=='start_':
