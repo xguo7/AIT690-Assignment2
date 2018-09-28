@@ -40,7 +40,7 @@ def delete_short(words,ngramModel):
     new_words=[]
     sentence=[]
     for i in words:       
-        sentence.append(i)
+        sentence.append(i.lower())
         if i in boundary: 
             if len(sentence)>ngramModel: new_words.extend(sentence)
             sentence=[]
