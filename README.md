@@ -9,7 +9,7 @@ This program can work for any value of N, and output m sentences as the user req
 n refers to the number of grams and m refers to the number of sentences you want to generate.
 
 for example:
-   ngram.pl 3 10 pg2554.txt pg2600.txt pg1399.txt
+   ngram.py 3 10 'austen-emma.txt' 'austen-persuasion.txt'
    
    
 The .txt files used in this project are from <http://www.gutenberg.org>. Thus, you could chose the files name as follows:
