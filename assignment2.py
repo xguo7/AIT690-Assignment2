@@ -1,5 +1,6 @@
 '''
-This Python program called ngram.py will learn an N-gram language model from an arbitrary number of plain text files. The program can generate a given number of sentences based on that N-gram model. 
+This Python program called ngram.py will learn an N-gram language model from an arbitrary number of plain text files. 
+The program can generate a given number of sentences based on that N-gram model. 
 This program can work for any value of N, and output m sentences as the user requires. Your can run the program as follows:
    ngram.py n m input-file/s   
 n refers to the number of grams and m refers to the number of sentences you want to generate.
@@ -28,15 +29,15 @@ def read_files(ngramModel, numFiles):
     This function returns tokens as the output
     '''
     MergedText = []
+		
     for file in range(3,numFiles):
         #Read all the files	
         word =gutenberg.words(sys.argv[file])
-        MergedText.extend(word)   #add
-        
+        MergedText.extend(word)   #add  
     return MergedText
 
 def boundaries(nngrams):  
-    ''' delete the cross boudary nngrams'''
+    ''' delete the cross boundary nngrams'''
     new_nngrams=[]
     for i in nngrams:
          if not ( ('end_' in i and i.index('end_')!=len(i)-1) or ('start_' in i and i.index('start_')!=0)):
@@ -44,53 +45,56 @@ def boundaries(nngrams):
     return new_nngrams
 
 def delete_short(words,ngramModel):
-    '''1. delete the words from short sentence which words amount is less than n
-        2. add the start and end tags on the words list so that each sentance will begin with 'start_' and end with 'end_' '''
-    boundary=['.','?','!',';']  #put the start and end tags when find the end punctations
+    '''1. delete the words from short sentence where words amount is less than n so that they will not be considered while generating ngram model
+       2. add the start and end tags on the words list so that each sentence will begin with 'start_' and end with 'end_' '''
+    boundary=['.','?','!']  #put the start and end tags when find the end punctuations
     new_words=[]
     sentence=[]
     for i in words:       
+        #Convert all texts to lower case
         sentence.append(i.lower())
         if i in boundary: 
             if len(sentence)>=ngramModel: 
-                 sentence.append('end_') #give the end tag if the sentance is ended.
+                 sentence.append('end_') #give the end tag if the sentence is ended.
                  new_words.extend(sentence)
-            sentence=['start_'] #add a start tag at the begining of a sentence
+            sentence=['start_'] #add a start tag at the beginning of a sentence
     return new_words
 
 def generateModel(MergedText, ngramModel, numSentences):
     '''
-    This function generates nGram Model.
+    This function discards the sentences where number of words are less than n
+	Generates nGram Model.
     '''
     vocabulary = set(MergedText)
 	
-    MergedText=delete_short(MergedText,ngramModel) # delete the words from short sentence which words amount is less than n
+    MergedText = delete_short(MergedText,ngramModel) # delete the words from short sentence where words amount is less than n
 
-    nngrams = boundaries(list(ngrams(MergedText,ngramModel)))  #generate the nngrams withour cross bouodary
-    #nngrams = list(ngrams(MergedText,ngramModel))
-    cfd = ConditionalFreqDist()
+    nngrams = boundaries(list(ngrams(MergedText,ngramModel)))  #generate the nngrams without cross bouodary
+   
+    cfd = ConditionalFreqDist() 
     ngramSet = set()
     vocabularyOfWords = set()
     fdist = FreqDist()
 	
     ProbDictionary = defaultdict(list)
-	#Generate conditional frequency distribution 
-    
+
+	#Generate conditional frequency distribution     
     for ngram in nngrams:
         ngramSet.add(ngram)
-        initial_text = tuple(ngram[:-1])
-        last_word = ngram[-1]
+        initial_text = tuple(ngram[:-1]) #this is the initial_text from the ngram (n-1)
+        last_word = ngram[-1] #this is the last word from ngram
         cfd[initial_text][last_word] += 1
 		
         #Smoothing and generating probabilities using Laplace Algorithm
         laplace_prob = [1.0 * (1+cfd[initial_text][last_word]) / (len(vocabulary)+cfd[initial_text].N())]
-        ProbDictionary[initial_text].append(last_word)
+        ProbDictionary[initial_text].append(last_word) #Storing probability of each word 
         vocabularyOfWords.add(last_word)
-   
+
+    #generate sentences
     generateSentences(nngrams,cfd,ngramModel,ProbDictionary,numSentences)
 	    
 def find_start_grams(nngrams):
- '''this function found all the grams that can be used at the beginging of a sentence, which has a stat tag'''
+#this function found all the grams that can be used at the beginging of a sentence, which has a stat tag
     start_grams=[]
     for gram in nngrams:	
           if gram[0]=='start_':
@@ -104,11 +108,10 @@ def generateSentences(nngrams,cfd,ngramModel,ProbDictionary,numSentences):
         #select a random ngram out of all ngrams generated
         start_gram=find_start_grams(nngrams) #find the grams that follows the start mark
         random_ngram = random.choice(start_gram)       
-        #get rid of the last word from the ngram, "seed" is a list of string with the first (n-1) words
         
+        #get rid of the last word from the ngram, "seed" is a list of string with the first (n-1) words
         seed = tuple(random_ngram[:-1])
-        #print("seed: ",seed)
-
+ 
         #Predict the next word based on the seed
         #predictedWord = cfd[seed].max()
         for key,value in ProbDictionary.items():
@@ -119,6 +122,7 @@ def generateSentences(nngrams,cfd,ngramModel,ProbDictionary,numSentences):
         #New text generated by joining seed and the predicted word
         newText = ' '.join(seed) + " " + predictedWord
         end_marks=['.','?','!']
+
         #Predict next words for new sentence creation
         while (predictedWord!='end_'):  # keep going until find an end mark
             #Add the word predicted to the actual seed
@@ -132,12 +136,10 @@ def generateSentences(nngrams,cfd,ngramModel,ProbDictionary,numSentences):
             
             #Convert the updated seed back to the seed tuple
             seed = tuple(seedList)
-			
-            #Predict the next word based on the new seed
-            #predictedWord = cfd[seed].max()
-			
+
+            #Iterate through all the items in probability dictionary			
             for key,value in ProbDictionary.items():
-                if(key == seed):
+                if(key == seed): #If seed matches dictionary item, choose a random value to find the predicted word from the list of values
                     predictedWord = random.choice(value)
                     break
 		
@@ -150,13 +152,18 @@ def main():
     '''
     This is the main function. 
 	'''
-    
-    ngramModel= int(sys.argv[1])
-    numSentences = sys.argv[2] 
-    numFiles = len(sys.argv)	
+    #Fetch arguments in variables
+    ngramModel= int(sys.argv[1]) #n=1,2,3,4 and so on for the number of ngram model to be generated
+    numSentences = sys.argv[2] #number of sentences to be generated
+    numFiles = len(sys.argv)   #number of text files provided in argument
+	
+    #This function reads the files
     MergedText = read_files(ngramModel,numFiles)
+	
     print("This program generates random sentences based on an Ngram model.")
     print("Command line settings: ngram.py",ngramModel,numSentences)
+    
+    #this function generates the ngram model and random sentences
     generateModel(MergedText,ngramModel,numSentences)
   
     
