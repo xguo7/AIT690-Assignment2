@@ -1,6 +1,8 @@
 %script ngram-log.txt
-%time python ngram.py 1 10 'austen-emma.txt' 'austen-persuasion.txt'
-%time python ngram.py 2 10 'austen-emma.txt' 'austen-persuasion.txt'
-%time python ngram.py 3 10 'austen-emma.txt' 'austen-persuasion.txt'
-%time python ngram.py 4.10 'austen-emma.txt' 'austen-persuasion.txt'
+% 0:00:42.583000 python ngram.py 1 10 austen-emma.txt austen-persuasion.txt
+% 0:00:07.389000 python ngram.py 2 10 austen-emma.txt austen-persuasion.txt
+% 0:00:51.941000 python ngram.py 3 10 austen-emma.txt austen-persuasion.txt
+% 0:01:38.646000 python ngram.py 4 10 austen-emma.txt austen-persuasion.txt
+% 0:01:40.544000 python ngram.py 5 10 austen-emma.txt austen-persuasion.txt
 %exit
+%The time refers to the time cost by running a file.
