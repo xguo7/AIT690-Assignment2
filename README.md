@@ -19,3 +19,5 @@ The .txt files used in this project are from <http://www.gutenberg.org>. Thus, y
    'edgeworth-parents.txt', 'melville-moby_dick.txt', 'milton-paradise.txt', 'shakespeare-caesar.txt', 
    'shakespeare-hamlet.txt',   'shakespeare-macbeth.txt', 'whitman-leaves.txt'
    
+Some of the code for fetching the file and calculating Conditional Frequency Distribution is picked up from NTLK Book.
+https://www.nltk.org/book/
