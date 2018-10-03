@@ -14,6 +14,11 @@ The .txt files used in this project are from <http://www.gutenberg.org>. Thus, y
    
 Some of the code for fetching the file and calculating Conditional Frequency Distribution is picked up from NTLK Book.
 https://www.nltk.org/book/
+
+This program will generate ngram-log.txt file in the same folder from where you run the program.
+Log will be written in this format in the text file
+script ngram-log.txt
+4.443262577056885 secs python ngram.py 4 10 austen-emma.txt austen-persuasion.txt carroll-alice.txt script ngram-log.txt
 '''
 import nltk
 import sys
@@ -25,7 +30,7 @@ from nltk.util import ngrams
 from nltk.probability import FreqDist,ConditionalFreqDist,ConditionalProbDist
 from collections import defaultdict
 from nltk.corpus import gutenberg
-import datetime 
+import time 
 def read_files(ngramModel, numFiles):
     '''
     This function fetches text from all the files provided in the arguments and merges the files.
@@ -153,7 +158,7 @@ def main():
     '''
     This is the main function. 
 	'''
-    start=datetime.datetime.now() #record the start time
+    start=time.time() #record the start time
 	
     #Fetch arguments in variables
     ngramModel= int(sys.argv[1]) #n=1,2,3,4 and so on for the number of ngram model to be generated
@@ -168,9 +173,19 @@ def main():
 
     #this function generates the ngram model and random sentences
     generateModel(MergedText,ngramModel,numSentences)
-    end=datetime.datetime.now() #record the end time
-	
-    print(end-start)   #display the time cost
-	
+    
+    #record the end time
+    end = time.time() 
+    total_time = end-start
+    
+    filename=""
+    for file in range(3,numFiles):
+        #Read all the files	
+        filename += sys.argv[file] + " " 
+
+    #Write the log file
+    with open("ngram-log.txt", "a+") as text_file:
+        text_file.write("%s" % total_time + " secs python ngram.py " + "%s %s %s" % (ngramModel, numSentences, filename) + "\n")
+		
 if __name__ == '__main__':
     main()
