@@ -17,8 +17,8 @@ https://www.nltk.org/book/
 
 This program will generate ngram-log.txt file in the same folder from where you run the program.
 Log will be written in this format in the text file
-script ngram-log.txt
-4.443262577056885 secs python ngram.py 4 10 austen-emma.txt austen-persuasion.txt carroll-alice.txt script ngram-log.txt
+
+4.443262577056885 secs python ngram.py 4 10 austen-emma.txt austen-persuasion.txt carroll-alice.txt 
 '''
 import nltk
 import sys
